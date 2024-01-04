@@ -29,6 +29,19 @@
 </head>
 
 <body>
+  <a href="#" class="back-button">
+    <img src="../assets/back.png" alt="Back">
+</a>
+<div class="learn">
+<div id="sort-view">
+<ul></ul>
+</div>
+
+<script>
+document.querySelector(".back-button").addEventListener("click", function() {
+window.history.back();
+});
+</script>
   <div id="body-container" style="display: flex; flex-direction: column; min-height: 100vh;">
     <link rel="stylesheet" href="/learn/learn_body.css">
     <nav id="topbar">
