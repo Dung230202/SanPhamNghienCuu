@@ -40,7 +40,7 @@ export default class Mainscene extends Phaser.Scene {
       learnbtn.on('pointerdown',() => {
         this.sound.play('buttonClick', { volume: 0.5 });
         console.log('Nhấn nút Learn!');
-        window.location.href = "/js/learn.html";
+        window.location.href = "/learn/learn.html";
     })
   }
   

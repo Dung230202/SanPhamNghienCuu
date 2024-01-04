@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- <meta name="csrf-token" content="KgXJw47QezINxp9yEq4hedkV0uokoUnQh6zoA1pw"> -->
+  <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+  <!-- <meta property="og:image" content="https://visualgo.net/img/png/sorting.png"> -->
+  <title>Mô phỏng sắp xếp nổi bọt - Bubble Sort Visualization</title>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      // Tìm phần tử có id "title-Insertion" và kích hoạt sự kiện click tự động
+      var titleElement = document.getElementById('title-Bubble');
+      if (titleElement) {
+        titleElement.click();
+      }
+    });
+  </script>
+
+  <link rel="stylesheet" href="https://visualgo.net/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://visualgo.net/fonts/silkscreen/stylesheet.css">
+  <link rel="stylesheet" type="text/css" href="https://visualgo.net/css/common-1.0.2.css">
+  <link rel="stylesheet" href="https://visualgo.net/css/viz-1.0.4.css">
+  <link rel="stylesheet" href="https://visualgo.net/css/visual.css">
+  <link rel="stylesheet" href="https://visualgo.net/css/drawgraph-1.0.2.css">
+  <link rel="stylesheet" href="/learn/learn.css">
+</head>
+
+<body>
+  <div id="body-container" style="display: flex; flex-direction: column; min-height: 100vh;">
+    <link rel="stylesheet" href="/learn/learn_body.css">
+    <nav id="topbar">
+
+      <span style="max-height: 30px">
+        <span id="title">
+          <a id="title-Bubble">Bubble</a>
+          <!-- <a id="title-Insertion">Insert</a> -->
+
+        </span>
+      </span>
+      <span style="max-height: 30px; background-color:rgb(0,0,0)!important; color: white; margin-left: auto">
+        <div id="mode-menu">
+
+          <div id="other-modes" style="background-color: rgb(0,0,0)!important; padding-top: 11px">
+
+          </div>
+        </div>
+      </span>
+
+    </nav>
+
+
+    <div id="dark-overlay"></div>
+    <div id="main-content-container" style="flex: 1">
+
+      <div id="mobile-playback-overlay" class="playing" style="display: none;">
+        <span id="mobile-playback-rewind-label" class="mobile-playback-label">-7</span>
+        <span id="mobile-playback-rewind" class="mobile-playback-item" onclick="mobilePlaybackRewind()"><img
+            src="https://visualgo.net/img/prevFrame.png" alt="rewind 7 frames"></span>
+        <span id="mobile-playback-pause" class="mobile-playback-item" onclick="mobilePlaybackPauseOrPlay()"><img
+            src="https://visualgo.net/img/pause.png" alt="pause"></span>
+        <span id="mobile-playback-play" class="mobile-playback-item" style="display: none;"
+          onclick="mobilePlaybackPauseOrPlay()"><img src="https://visualgo.net/img/play.png" alt="play"></span>
+        <span id="mobile-playback-forward" class="mobile-playback-item" onclick="mobilePlaybackForward()"><img
+            src="https://visualgo.net/img/nextFrame.png" alt="forward 7 frames"></span>
+        <span id="mobile-playback-forward-label" class="mobile-playback-label">+7</span>
+      </div>
+      <div id="status" class="panel">
+        <p></p>
+      </div>
+      <div id="status-hide" class="panel-hide"><img src="https://visualgo.net/img/arrow_white_right.png" alt=">"
+          title="show/hide status panel" /></div>
+      <div id="codetrace" class="panel">
+        <p id="code1" style="padding-top: 10px;"></p>
+        <p id="code2"></p>
+        <p id="code3"></p>
+        <p id="code4"></p>
+        <p id="code5"></p>
+        <p id="code6"></p>
+        <p id="code7" style="padding-bottom: 10px;"></p>
+      </div>
+      <div id="codetrace-hide" class="panel-hide"><img src="https://visualgo.net/img/arrow_white_right.png" alt=">"
+          title="show/hide codetrace panel" /></div>
+      <div id="left-bar"></div>
+      <div id="right-bar"></div>
+      <div id="media-controls">
+        <div id="speed-control">
+          <div id="speed-input"></div>
+          <div id="viz-speed-value">1x</div>
+        </div>
+        <span id="go-to-beginning" class="media-control-button" title="go to beginning" onclick="goToBeginning()"><img
+            src="https://visualgo.net/img/goToBeginning.png" alt="go to beginning"></span>
+        <span id="previous" class="media-control-button" title="step backward" onclick="stepBackward()"><img
+            src="https://visualgo.net/img/prevFrame.png" alt="previous frame"></span>
+        <span id="pause" class="media-control-button" title="pause" onclick="pause()"><img
+            src="https://visualgo.net/img/pause.png" alt="pause"></span>
+        <span id="play" class="media-control-button" title="play" onclick="play()"><img
+            src="https://visualgo.net/img/play.png" alt="play"></span>
+        <span id="next" class="media-control-button" title="step forward" onclick="stepForward()"><img
+            src="https://visualgo.net/img/nextFrame.png" alt="next frame"></span>
+        <span id="go-to-end" class="media-control-button" title="go to end" onclick="goToEnd()"><img
+            src="https://visualgo.net/img/goToEnd.png" alt="go to end"></span>
+        <div id="progress-bar" class="media-control-button"></div>
+      </div>
+
+      <div id="rotateDeviceOverlay" style="display: none;">
+        <div id="rotateDeviceText" style="font-size: 45px; font-weight: bold; text-align: center">Please rotate your
+          device to landscape mode for a better user experience</div>
+        <div id="widenDeviceText" style="font-size: 45px; font-weight: bold; text-align: center">Please make the window
+          wider for a better user experience</div>
+      </div>
+      <div id="sort-viz">
+        <svg id="viz"></svg><br>
+        <svg id="viz-sort-index-canvas"></svg>
+        <svg id="viz-counting-sort-secondary-canvas"></svg>
+
+      </div>
+      <div id="current-action" class="panel">
+        <p></p>
+      </div>
+
+      <div id="actions" class="panel">
+        <p id="create">Tạo mới</p>
+        <p class="execAction" id="sort" onClick="sortGeneric()">Sort</p>
+      </div>
+      <div id="actions-hide" class="panel-hide"><span
+          style="color:white; font-size: x-large; display: inline-block;">&gt;</span></div>
+      <div id="actions-extras">
+        <div class="create action-menu-pullout">
+          <div id="create-userdefined-input-random" class="new-menu-option">
+            N = <input id="user-arr-size" type="number" autocomplete="off" min="1" max="43" value="10"> </div>
+          <div id="create-random" class="execAction new-menu-option coloured-menu-option"
+            onClick="createList('random')">
+            <p>Random</p>
+          </div>
+          <div id="create-sorted" class="execAction new-menu-option coloured-menu-option"
+            onClick="toggleChildExtras('create', 'create-sorted')">
+            <p>Sorted</p>
+            <div id="create-sorted-third-tier" class="create-sorted-third-tier new-menu-option" style="display: none;">
+              <div id="create-sorted-non-increasing" class="execAction coloured-menu-option" style="float: right;"
+                onClick="createList('sorted-non-increasing')">
+                <p>Non-increasing</p>
+              </div>
+              <div id="create-sorted-non-decreasing" class="execAction coloured-menu-option" style="float: right;"
+                onClick="createList('sorted-non-decreasing')">
+                <p>Non-decreasing</p>
+              </div>
+            </div>
+          </div>
+          <div id="create-nearly-sorted" class="execAction new-menu-option coloured-menu-option"
+            onClick="toggleChildExtras('create', 'create-nearly-sorted')">
+            <p>Nearly sorted</p>
+            <div id="create-nearly-sorted-third-tier" class="create-nearly-sorted-third-tier new-menu-option"
+              style="display: none;">
+              <div id="create-nearly-sorted-decreasing" class="execAction coloured-menu-option" style="float: right;"
+                onClick="createList('nearly-sorted-non-increasing')">
+                <p>Non-increasing</p>
+              </div>
+              <div id="create-nearly-sorted-increasing" class="execAction coloured-menu-option" style="float: right;"
+                onClick="createList('nearly-sorted-non-decreasing')">
+                <p>Non-decreasing</p>
+              </div>
+            </div>
+          </div>
+          <div id="create-many-duplicates" class="execAction new-menu-option coloured-menu-option"
+            onClick="createList('many-duplicates')">
+            <p>Many Duplicates</p>
+          </div>
+          <div id="create-userdefined-input" class="new-menu-option">
+            A = <input id="userdefined-input" type="text" title="Enter a list of numbers, separated by commas."
+              autocomplete="off" value="3,44,38,5,47,15,36,26,27,2,46,4,19,50,48"> </div>
+          <div id="create-userdefined-go" class="execAction new-menu-option coloured-menu-option"
+            onClick="createList('userdefined')">
+            <p>Go</p>
+          </div>
+          <div id="create-userdefined-input-cs" class="new-menu-option" style="display: none;">
+            (base) k = <input id="counting-sort-base" type="number" autocomplete="off" min="2" max="16" value="10">
+          </div>
+          <div id="create-userdefined-go-cs" class="execAction new-menu-option coloured-menu-option"
+            onClick="setBase()">
+            <p>Set base</p>
+          </div>
+          <div id="create-userdefined-input-rs" class="new-menu-option" style="display: none;">
+            (base) k = <input id="radix-sort-base" type="number" autocomplete="off" min="1" max="16" value="10"> </div>
+          <div id="create-userdefined-go-rs" class="execAction new-menu-option coloured-menu-option"
+            onClick="setBase()">
+            <p>Set base</p>
+          </div>
+          <div id="create-err" class="err" style="float: left;"></div>
+        </div>
+        <div class="sort action-menu-pullout">
+          <div id="counting-simple" class="execAction new-menu-option coloured-menu-option" onClick="sort()"
+            style="display: none">
+            <p>Simple</p>
+          </div>
+          <div id="counting-stable" class="execAction new-menu-option coloured-menu-option"
+            onClick="countingSortStable()" style="display: none">
+            <p>Stable</p>
+          </div>
+          <div id="sort-err" class="err" style="float: left;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bottom-bar">
+      <a id="scale" style="display: none;">1.0x</a>
+      <a id="trigger-about"></a>
+      <a id="trigger-team"></a>
+      <a id="trigger-terms"></a>
+      <a id="trigger-privacy"></a>
+    </div>
+    <div id="about" class="overlays">
+
+    </div>
+    <div id="team" class="overlays">
+      <h4></h4><span class="close-overlay">&#x2715;</span>
+
+    </div>
+    <div id="termsofuse" class="overlays">
+      <h4></h4><span class="close-overlay">&#x2715;</span>
+    </div>
+    <div id="privacy-policy" class="overlays">
+      <h4></h4><span class="close-overlay">&#x2715;</span>
+
+    </div>
+  </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/d3-force-boundary@0.0.1/dist/d3-force-boundary.min.js"></script>
+  <script src="/learn/body_screenadjust.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1566631-4"></script>
+  <script src="/learn/body1.js"></script>
+  <script src="https://visualgo.net/js/jquery-ui.min.js"></script>
+  <script src="https://visualgo.net/js/d3.min.js"></script>
+  <script src="https://visualgo.net/js/viz-1.0.10.js"></script>
+  <script src="/learn/body2.js"></script>
+  <script src="/learn/body_action.js" type="text/javascript"></script>
+  <script src="/learn/body_func.js" type="text/javascript"></script>
+</body>
+
+</html>
