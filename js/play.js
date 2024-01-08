@@ -59,9 +59,9 @@ export default class Playscene extends Phaser.Scene {
     
 //Tạo nhóm bong bóng
     this.bubbles = this.physics.add.group();
-    const numBubbles = 4;
+    const numBubbles = 5;
     const bubbleGap = 155;
-    const bubbleColors = [0x00FFFF, 0xCCFF00, 0x33FF33, 0xFFCCFF,] //0xFF0033];
+    const bubbleColors = [0x00FFFF, 0xCCFF00, 0x33FF33, 0xFFCCFF,0xFF0033];
 //Hàm tạo mảng số nguyên
     function generateUniqueNaturalNumbers(size, min, max) {
       const uniqueNumbers = new Set();
