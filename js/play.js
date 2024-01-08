@@ -162,19 +162,18 @@ export default class Playscene extends Phaser.Scene {
     }
   }
 // Kiểm tra sắp xếp Bubble Sort
-  checkBubbleSort() {
-    if (!this.isGameOver) {
-      console.log("Checking Bubble Sort...");
-  
-      this.input.enabled = false;
-  
-      // Sắp xếp mảng theo thứ tự từ phải sang trái
-      const bubblesArray = this.bubbles.getChildren(false).reverse();
-      
-  
-      const isSorted = this.isBubbleSortCorrect(bubblesArray);
-  
-      this.input.enabled = true;
+checkBubbleSort() {
+  if (!this.isGameOver) {
+    console.log("Checking Bubble Sort...");
+
+    this.input.enabled = false;
+
+    const bubblesArray = this.bubbles.getChildren(false); // Remove unnecessary reversal
+
+    // Check for correct sorting and step-by-step execution
+    const isSorted = this.isBubbleSortCorrect(bubblesArray) && this.isBubbleSortExecutedCorrectly(bubblesArray);
+
+    this.input.enabled = true;
 // Xử lý kết quả sắp xếp  
       if (isSorted) {
         console.log("Sorting is correct. Congratulations!");
