@@ -185,7 +185,7 @@ checkBubbleSort() {
     }
   }
 // Kiểm tra từng bước của Bubble Sort 
-isBubbleSortExecutedCorrectly(bubblesArray) {
+  isBubbleSortExecutedCorrectly(bubblesArray) {
   const originalArray = bubblesArray.map(b => b.numbers);
 
   // Simulate Bubble Sort and track swaps
@@ -203,7 +203,13 @@ isBubbleSortExecutedCorrectly(bubblesArray) {
   // Compare the simulated sorted array with the actual bubblesArray
   return arraysMatch(originalArray, bubblesArray.map(b => b.numbers));
 }
- 
+// Tạo mảng đã sắp xếp bằng Bubble Sort
+  generateBubbleSortArray(originalArray) {
+    const copyArray = originalArray.slice(); // or const copyArray = [].concat(originalArray);
+    const sortedArray = copyArray.sort((a, b) => a - b);
+    return sortedArray;
+  }
+  
 // So sánh hai mảng
 isBubbleSortCorrect(arr) {
   for (let i = 0; i < arr.length - 1; i++) {
