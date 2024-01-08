@@ -184,9 +184,23 @@ checkBubbleSort() {
       }
     }
   }
+
 // Check Bubble Sort execution steps (improved)
 isBubbleSortExecutedCorrectly(bubblesArray) {
   const originalArray = bubblesArray.map(b => b.numbers);
+
+  // Kiểm tra lỗi đầu vào
+  if (!Array.isArray(bubblesArray)) {
+    return false;
+  }
+  if (bubblesArray.length === 0) {
+    return true;
+  }
+
+  // Kiểm tra mảng chỉ có một phần tử
+  if (bubblesArray.length === 1) {
+    return true;
+  }
 
   // Simulate Bubble Sort and track swaps
   let hasSwapped;
@@ -200,10 +214,11 @@ isBubbleSortExecutedCorrectly(bubblesArray) {
     }
   } while (hasSwapped);
 
-  // Compare the simulated sorted array with the actual bubblesArray
+  // Kiểm tra xem các bước thực hiện có đúng thuật toán Bubble Sort không
   return arraysMatch(originalArray, bubblesArray.map(b => b.numbers));
 }
-    
+
+  
 // So sánh hai mảng
 isBubbleSortCorrect(arr) {
   for (let i = 0; i < arr.length - 1; i++) {
