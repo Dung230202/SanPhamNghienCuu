@@ -202,17 +202,30 @@ isBubbleSortExecutedCorrectly(bubblesArray) {
     return true;
   }
 
+  // Cài đặt số lần lặp tối đa
+  const maxIterations = (originalArray.length - 1) ** 2;
+
   // Simulate Bubble Sort and track swaps
   let hasSwapped;
-  do {
+  for (let i = 0; i < originalArray.length; i++) {
     hasSwapped = false;
-    for (let i = 0; i < originalArray.length - 1; i++) {
-      if (originalArray[i] > originalArray[i + 1]) {
-        [originalArray[i], originalArray[i + 1]] = [originalArray[i + 1], originalArray[i]];
+    for (let j = 0; j < originalArray.length - 1 - i; j++) {
+      if (originalArray[j] > originalArray[j + 1]) {
+        [originalArray[j], originalArray[j + 1]] = [originalArray[j + 1], originalArray[j]];
         hasSwapped = true;
       }
     }
-  } while (hasSwapped);
+
+    // Nếu không xảy ra đổi chỗ nào thì mảng đã được sắp xếp
+    if (!hasSwapped) {
+      return true;
+    }
+
+    // Nếu thuật toán chạy quá nhiều lần thì có lỗi
+    if (i > maxIterations) {
+      return false;
+    }
+  }
 
   // Kiểm tra xem các bước thực hiện có đúng thuật toán Bubble Sort không
   return arraysMatch(originalArray, bubblesArray.map(b => b.numbers));
