@@ -162,34 +162,38 @@ export default class Playscene extends Phaser.Scene {
     }
   }
 // Kiểm tra sắp xếp Bubble Sort
-checkBubbleSort() {
+handleCheckBubbleSort() {
   if (!this.isGameOver) {
     console.log("Checking Bubble Sort...");
 
     this.input.enabled = false;
 
-    const bubblesArray = this.bubbles.getChildren(false); // Remove unnecessary reversal
+    const bubblesArray = this.bubbles.getChildren(false);
 
-    // Check for correct sorting and step-by-step execution
-    const isSorted = this.isBubbleSortCorrect(bubblesArray) && this.isBubbleSortExecutedCorrectly(bubblesArray);
+    // Check for correct sorting
+    const isSorted = arraysMatch(bubblesArray, this.originalNumbers);
+
+    // Check for correct execution
+    const isExecutedCorrectly = this.isBubbleSortExecutedCorrectly(bubblesArray);
 
     this.input.enabled = true;
-// Xử lý kết quả sắp xếp  
-      if (isSorted) {
-        console.log("Sorting is correct. Congratulations!");
-        this.handleGameSuccess();
-      } else {
-        console.log("Sorting is incorrect. Game Over!");
-        this.handleGameOver();
-      }
+
+    //Xử lí kết quả
+    if (isSorted && isExecutedCorrectly.isCorrect) {
+      console.log("Sorting is correct. Congratulations!");
+      this.handleGameSuccess();
+    } else {
+      console.log("Sorting is incorrect. Game Over!");
+      this.handleGameOver();
     }
   }
+}
 
-// Check Bubble Sort execution steps (improved)
+// Check Bubble Sort execution steps (corrected)
 isBubbleSortExecutedCorrectly(bubblesArray) {
   const originalArray = bubblesArray.map(b => b.numbers);
 
-  // Kiểm tra lỗi đầu vào
+  // Input validation
   if (!Array.isArray(bubblesArray)) {
     return false;
   }
@@ -197,50 +201,62 @@ isBubbleSortExecutedCorrectly(bubblesArray) {
     return true;
   }
 
-  // Kiểm tra mảng chỉ có một phần tử
+  // Handle single-element array
   if (bubblesArray.length === 1) {
     return true;
   }
 
-  // Cài đặt số lần lặp tối đa
-  const maxIterations = (originalArray.length - 1) ** 2;
-
   // Simulate Bubble Sort and track swaps
-  let hasSwapped;
+  let swaps = new Array(originalArray.length).fill(false);
+  let isFullySorted = true;
+  let isFinished = false;
   for (let i = 0; i < originalArray.length; i++) {
-    hasSwapped = false;
+    swaps.push(false);
     for (let j = 0; j < originalArray.length - 1 - i; j++) {
       if (originalArray[j] > originalArray[j + 1]) {
-        [originalArray[j], originalArray[j + 1]] = [originalArray[j + 1], originalArray[j]];
-        hasSwapped = true;
+        // Check if the swap is correct
+        if (bubblesArray[j].numbers > bubblesArray[j + 1].numbers) {
+          swaps[i] = true;
+        } else {
+          return {
+            isCorrect: false,
+            error: "Swap at index " + i + " is incorrect.",
+          };
+        }
+
+        // Update the isFinished flag
+        isFinished = true;
       }
     }
-
-    // Nếu không xảy ra đổi chỗ nào thì mảng đã được sắp xếp
-    if (!hasSwapped) {
-      return true;
-    }
-
-    // Nếu thuật toán chạy quá nhiều lần thì có lỗi
-    if (i > maxIterations) {
-      return false;
-    }
   }
 
-  // Kiểm tra xem các bước thực hiện có đúng thuật toán Bubble Sort không
-  return arraysMatch(originalArray, bubblesArray.map(b => b.numbers));
+  // Check if the array is fully sorted
+  if (bubblesArray.length === 0) {
+    return {
+      isCorrect: true,
+      error: null,
+    };
+  } else if (bubblesArray.length === 1) {
+    return {
+      isCorrect: true,
+      error: null,
+    };
+  }
+}
+// Handle Bubble Sort swaps
+onBubbleSwap() {
+  this.swaps[this.i] = true;
+  this.i++;  // Cập nhật i
+}
+// Check if Bubble Sort is correct (corrected)
+isBubbleSortCorrect(bubblesArray) {
+  const sortedArr = bubblesArray.map(b => b.numbers).sort((a, b) => a - b);
+  const isSorted = arr.every((bubble, index) => {
+    return index === 0 || (index > 0 && sortedArr[index - 1] <= bubble.numbers);
+  });
+  return isSorted;
 }
 
-  
-// So sánh hai mảng
-isBubbleSortCorrect(arr) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] > arr[i + 1]) {
-      return false;
-    }
-  }
-  return true;
-}
 // Compare two numerical arrays (simplified)
 arraysMatch(arr1, arr2) {
   if (arr1.length !== arr2.length) {
