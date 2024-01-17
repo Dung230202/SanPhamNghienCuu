@@ -1,4 +1,4 @@
-
+// Thêm xóa, sửa và sử dụng màu sắc
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': "KgXJw47QezINxp9yEq4hedkV0uokoUnQh6zoA1pw"
