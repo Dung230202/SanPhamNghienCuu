@@ -165,17 +165,39 @@ bubbleSort(unsortedArray) {
 }
 // Updated isBubbleSortCorrect function
 isBubbleSortCorrect(bubblesArray) {
-  const sortedNumbers = bubblesArray.map(bubble => bubble.numbers).sort((a, b) => a - b);
+  const originalNumbers = [...this.originalNumbers];
 
-  for (let i = 0; i < sortedNumbers.length; i++) {
-    if (sortedNumbers[i] !== bubblesArray[i].numbers) {
+  // Sắp xếp mảng phụ lưu
+  originalNumbers.sort((a, b) => a - b);
+
+  // Kiểm tra thứ tự của 3 bong bóng sau khi hoán đổi
+  for (let i = 0; i < 3; i++) {
+    if (bubblesArray[i].numbers !== originalNumbers[i]) {
       return false;
     }
   }
 
   return true;
 }
+handleSwapBubble(bubble1, bubble2) {
+  // Hoán đổi vị trí của hai bong bóng
+  const temp = bubble1.numbers;
+  bubble1.numbers = bubble2.numbers;
+  bubble2.numbers = temp;
 
+  // Kiểm tra thứ tự sau khi hoán đổi
+  if (!this.isBubbleSortCorrect(this.bubblesArray)) {
+    return;
+  }
+
+  // Cập nhật số lần hoán đổi
+  this.numberOfSwaps++;
+
+  // Kiểm tra số lần hoán đổi để kích hoạt chuyển cảnh
+  if (this.numberOfSwaps === this.totalSwapsNeeded) {
+    this.handleGameSuccess();
+  }
+}
 // Thuật toán Bubble Sort tùy chỉnh cho trò chơi của bạn
 customBubbleSort(bubblesArray) {
   const n = bubblesArray.length;
